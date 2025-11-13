@@ -1052,12 +1052,31 @@ Banner Style
   font-size: 20px;
   color: #fff;
   margin-bottom: 20px;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.2;
+  word-break: break-word;
 }
 #section-1 .content-slider .slider .banner .banner-inner-wrapper h1 {
   font-size: 50px;
   color: #fff;
   font-weight: 700;
   margin-bottom: 30px;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.2;
+  word-break: break-word;
+}
+
+/* Fontes fluidas para textos do slider - responsividade automática */
+#section-1 .main-caption h1,
+#section-1 .content-slider .slider .banner .banner-inner-wrapper .main-caption h1 {
+  font-size: clamp(1.4rem, 4vw + 1rem, 3rem);
+}
+
+#section-1 .main-caption h2,
+#section-1 .content-slider .slider .banner .banner-inner-wrapper .main-caption h2 {
+  font-size: clamp(1rem, 2.5vw + 0.5rem, 2rem);
 }
 #section-1 .content-slider .slider .banner .banner-inner-wrapper .learn-more-button a:hover {
   color: #22b3c1;
@@ -2550,6 +2569,18 @@ body {
   }
   .visit-country .item .right-content h4 {
     margin-top: 20px;
+  }
+}
+
+/* Media query específica para mobile - garante melhor visual em telas pequenas */
+@media (max-width: 600px) {
+  #section-1 .main-caption h1,
+  #section-1 .content-slider .slider .banner .banner-inner-wrapper .main-caption h1 {
+    font-size: 1.6rem;
+  }
+  #section-1 .main-caption h2,
+  #section-1 .content-slider .slider .banner .banner-inner-wrapper .main-caption h2 {
+    font-size: 1.1rem;
   }
 }
 
