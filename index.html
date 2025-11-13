@@ -5,10 +5,24 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <!-- Meta tags de performance -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="format-detection" content="telephone=no">
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Preconnect e DNS prefetch para recursos externos (melhora performance) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://www.google.com">
+    <link rel="dns-prefetch" href="https://unpkg.com">
+
+    <!-- Google Fonts otimizado - apenas pesos necessários (400, 500, 600, 700) com font-display: swap -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <title>WATech - Experiência Digital</title>
+
+    <!-- Preload da primeira imagem do banner (above the fold) -->
+    <link rel="preload" href="assets/images/banner-01.jpg" as="image" fetchpriority="high">
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -18,7 +32,7 @@
     <link rel="stylesheet" href="assets/css/templatemo-woox-travel.css">
     <link rel="stylesheet" href="assets/css/owl.css">
     <link rel="stylesheet" href="assets/css/animate.css">
-    <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+    <!-- Swiper CSS removido - não está sendo usado -->
 <!--
 
 TemplateMo 580 Woox Travel
@@ -154,7 +168,7 @@ https://templatemo.com/tm-580-woox-travel
                   <div class="row">
                     <div class="col-lg-4 col-sm-5">
                       <div class="image">
-                        <img src="assets/images/country-01.jpg" alt="Praia da Vila">
+                        <img src="assets/images/country-01.jpg" alt="Praia da Vila" loading="lazy" decoding="async">
                       </div>
                     </div>
                     <div class="col-lg-8 col-sm-7">
@@ -183,7 +197,7 @@ https://templatemo.com/tm-580-woox-travel
                   <div class="row">
                     <div class="col-lg-4 col-sm-5">
                       <div class="image">
-                        <img src="assets/images/country-02.jpg" alt="Jaconé">
+                        <img src="assets/images/country-02.jpg" alt="Jaconé" loading="lazy" decoding="async">
                       </div>
                     </div>
                     <div class="col-lg-8 col-sm-7">
@@ -212,7 +226,7 @@ https://templatemo.com/tm-580-woox-travel
                   <div class="row">
                     <div class="col-lg-4 col-sm-5">
                       <div class="image">
-                        <img src="assets/images/country-03.jpg" alt="Itaúna">
+                        <img src="assets/images/country-03.jpg" alt="Itaúna" loading="lazy" decoding="async">
                       </div>
                     </div>
                     <div class="col-lg-8 col-sm-7">
@@ -244,7 +258,7 @@ https://templatemo.com/tm-580-woox-travel
             <div class="row">
               <div class="col-lg-12">
                 <div id="map">
-                  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3673.516387498296!2d-42.51363932360461!3d-22.92827797924948!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x97bafc2c7bdc5b%3A0x2192c508d57f075d!2sSaquarema%2C%20RJ!5e0!3m2!1spt-BR!2sbr!4v1731379200000!5m2!1spt-BR!2sbr" width="100%" height="550px" frameborder="0" style="border:0; border-radius: 23px; " allowfullscreen=""></iframe>
+                  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3673.516387498296!2d-42.51363932360461!3d-22.92827797924948!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x97bafc2c7bdc5b%3A0x2192c508d57f075d!2sSaquarema%2C%20RJ!5e0!3m2!1spt-BR!2sbr!4v1731379200000!5m2!1spt-BR!2sbr" width="100%" height="550px" frameborder="0" style="border:0; border-radius: 23px; " allowfullscreen="" loading="lazy" title="Mapa de Saquarema"></iframe>
                 </div>
               </div>
             </div>
@@ -284,28 +298,55 @@ https://templatemo.com/tm-580-woox-travel
 
   <!-- Scripts -->
   <!-- Bootstrap core JavaScript -->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+  <script src="vendor/jquery/jquery.min.js" defer></script>
+  <script src="vendor/bootstrap/js/bootstrap.min.js" defer></script>
 
-  <script src="assets/js/isotope.min.js"></script>
-  <script src="assets/js/owl-carousel.js"></script>
-  <script src="assets/js/wow.js"></script>
-  <script src="assets/js/tabs.js"></script>
-  <script src="assets/js/popup.js"></script>
-  <script src="assets/js/custom.js"></script>
+  <script src="assets/js/isotope.min.js" defer></script>
+  <script src="assets/js/owl-carousel.js" defer></script>
+  <script src="assets/js/wow.js" defer></script>
+  <script src="assets/js/tabs.js" defer></script>
+  <script src="assets/js/popup.js" defer></script>
+  <script src="assets/js/custom.js" defer></script>
+
+  <!-- Otimização: Preloader desaparece mais rápido se DOM já estiver pronto -->
+  <script>
+    // Remove preloader se DOM já estiver carregado (evita bloqueio visual)
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() {
+        // Timeout de segurança para remover preloader mesmo se scripts não carregarem
+        setTimeout(function() {
+          var preloader = document.getElementById('js-preloader');
+          if (preloader && !preloader.classList.contains('loaded')) {
+            preloader.classList.add('loaded');
+          }
+        }, 1000);
+      });
+    } else {
+      // DOM já está pronto, remover preloader imediatamente
+      var preloader = document.getElementById('js-preloader');
+      if (preloader) {
+        preloader.classList.add('loaded');
+      }
+    }
+  </script>
 
   <script>
-    function bannerSwitcher() {
-      next = $('.sec-1-input').filter(':checked').next('.sec-1-input');
-      if (next.length) next.prop('checked', true);
-      else $('.sec-1-input').first().prop('checked', true);
-    }
+    // Aguarda o DOM e jQuery estarem prontos
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof jQuery !== 'undefined') {
+        function bannerSwitcher() {
+          var next = jQuery('.sec-1-input').filter(':checked').next('.sec-1-input');
+          if (next.length) next.prop('checked', true);
+          else jQuery('.sec-1-input').first().prop('checked', true);
+        }
 
-    var bannerTimer = setInterval(bannerSwitcher, 5000);
+        var bannerTimer = setInterval(bannerSwitcher, 5000);
 
-    $('nav .controls label').click(function() {
-      clearInterval(bannerTimer);
-      bannerTimer = setInterval(bannerSwitcher, 5000)
+        jQuery('nav .controls label').click(function() {
+          clearInterval(bannerTimer);
+          bannerTimer = setInterval(bannerSwitcher, 5000);
+        });
+      }
     });
   </script>
 

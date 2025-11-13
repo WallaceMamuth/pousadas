@@ -24,7 +24,7 @@ Table of contents
 font & reset css
 --------------------------------------------- 
 */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900");
+/* @import removido - Google Fonts já carregado no HTML de forma otimizada */
 /* 
 ---------------------------------------------
 reset
@@ -350,6 +350,7 @@ Pre-loader Style
   z-index: 9999;
   -webkit-transition: opacity 0.25s ease;
   transition: opacity 0.25s ease;
+  will-change: opacity, visibility; /* Otimização para animação */
 }
 
 .js-preloader.loaded {
