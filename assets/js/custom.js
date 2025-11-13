@@ -141,6 +141,35 @@
 		const $mobileBackdrop = $('.mobile-nav-backdrop');
 		const $menuLabel = $menuTrigger.find('.menu-trigger__label');
 
+		const calculateMenuPosition = () => {
+			var $header = $('.header-area');
+			if (!$header.length) return 0;
+			
+			// Força reflow para garantir medidas atualizadas
+			$header[0].offsetHeight;
+			
+			var headerRect = $header[0].getBoundingClientRect();
+			var headerHeight = headerRect.height || $header.outerHeight(true);
+			var headerBottom = headerRect.bottom;
+			
+			// Se o header está visível, posiciona logo abaixo dele
+			// Se não está visível (scrollou muito), posiciona no topo
+			var menuTop = headerBottom > 0 ? headerBottom + 12 : 12;
+			
+			// Garante mínimo de 12px do topo
+			if (menuTop < 12) {
+				menuTop = 12;
+			}
+			
+			// Garante que não ultrapasse a viewport
+			var maxTop = window.innerHeight - 100;
+			if (menuTop > maxTop) {
+				menuTop = maxTop;
+			}
+			
+			return menuTop;
+		};
+
 		const openMobileNav = () => {
 			$menuTrigger.addClass('active')
 				.attr('aria-expanded', 'true')
@@ -150,34 +179,26 @@
 			
 			// Calcula a posição correta do menu baseado no header
 			if ($(window).width() < 992) {
-				// Usa requestAnimationFrame para garantir que o cálculo seja feito após o layout
+				// Primeiro define a posição
+				var menuTop = calculateMenuPosition();
+				
+				$mobileNav.css({
+					'top': menuTop + 'px',
+					'position': 'fixed',
+					'left': '16px',
+					'right': '16px',
+					'width': 'calc(100% - 32px)',
+					'max-width': 'calc(100vw - 32px)',
+					'display': 'none' // Inicia escondido para o slideDown funcionar
+				});
+				
+				// Usa double RAF para garantir que o layout está pronto (especialmente em Android)
 				requestAnimationFrame(function() {
-					var $header = $('.header-area');
-					var headerHeight = $header.outerHeight(true);
-					var scrollTop = $(window).scrollTop();
-					
-					// Calcula a posição do header em relação à viewport
-					var headerRect = $header[0].getBoundingClientRect();
-					var headerTopFromViewport = headerRect.top;
-					
-					// Posição do menu = posição do header + altura do header + espaçamento
-					var menuTop = headerTopFromViewport + headerHeight + 12;
-					
-					// Garante que o menu não fique acima da viewport
-					if (menuTop < 0) {
-						menuTop = 12;
-					}
-					
-					$mobileNav.css({
-						'top': menuTop + 'px',
-						'position': 'fixed',
-						'left': '16px',
-						'right': '16px',
-						'width': 'calc(100% - 32px)'
+					requestAnimationFrame(function() {
+						var menuTop = calculateMenuPosition();
+						$mobileNav.css('top', menuTop + 'px');
+						$mobileNav.stop(true, true).slideDown(220);
 					});
-					
-					// Força o slideDown após definir a posição
-					$mobileNav.stop(true, true).slideDown(220);
 				});
 			} else {
 				$mobileNav.stop(true, true).slideDown(220);
@@ -244,50 +265,27 @@
 				$mobileNav.removeAttr('style');
 			} else if ($menuTrigger.hasClass('active')) {
 				// Recalcula posição ao redimensionar
-				requestAnimationFrame(function() {
-					var $header = $('.header-area');
-					var headerHeight = $header.outerHeight(true);
-					var headerRect = $header[0].getBoundingClientRect();
-					var headerTopFromViewport = headerRect.top;
-					var menuTop = headerTopFromViewport + headerHeight + 12;
-					
-					if (menuTop < 0) {
-						menuTop = 12;
-					}
-					
-					$mobileNav.css({
-						'top': menuTop + 'px',
-						'position': 'fixed',
-						'left': '16px',
-						'right': '16px',
-						'width': 'calc(100% - 32px)'
-					});
+				var menuTop = calculateMenuPosition();
+				$mobileNav.css({
+					'top': menuTop + 'px',
+					'position': 'fixed',
+					'left': '16px',
+					'right': '16px',
+					'width': 'calc(100% - 32px)',
+					'max-width': 'calc(100vw - 32px)'
 				});
 			}
 		});
 		
-		// Recalcula posição do menu ao scrollar quando aberto
+		// Recalcula posição do menu ao scrollar quando aberto (com throttle para performance)
+		var scrollTimeout;
 		$(window).on('scroll', function() {
 			if ($menuTrigger.hasClass('active') && $(window).width() < 992) {
-				requestAnimationFrame(function() {
-					var $header = $('.header-area');
-					var headerHeight = $header.outerHeight(true);
-					var headerRect = $header[0].getBoundingClientRect();
-					var headerTopFromViewport = headerRect.top;
-					var menuTop = headerTopFromViewport + headerHeight + 12;
-					
-					if (menuTop < 0) {
-						menuTop = 12;
-					}
-					
-					$mobileNav.css({
-						'top': menuTop + 'px',
-						'position': 'fixed',
-						'left': '16px',
-						'right': '16px',
-						'width': 'calc(100% - 32px)'
-					});
-				});
+				clearTimeout(scrollTimeout);
+				scrollTimeout = setTimeout(function() {
+					var menuTop = calculateMenuPosition();
+					$mobileNav.css('top', menuTop + 'px');
+				}, 10);
 			}
 		});
 	}
