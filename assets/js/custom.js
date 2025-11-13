@@ -147,7 +147,42 @@
 				.attr('aria-label', 'Fechar menu de navegação');
 			$menuLabel.text('Fechar');
 			$('body').addClass('nav-open');
-			$mobileNav.stop(true, true).slideDown(220);
+			
+			// Calcula a posição correta do menu baseado no header
+			if ($(window).width() < 992) {
+				// Usa requestAnimationFrame para garantir que o cálculo seja feito após o layout
+				requestAnimationFrame(function() {
+					var $header = $('.header-area');
+					var headerHeight = $header.outerHeight(true);
+					var scrollTop = $(window).scrollTop();
+					
+					// Calcula a posição do header em relação à viewport
+					var headerRect = $header[0].getBoundingClientRect();
+					var headerTopFromViewport = headerRect.top;
+					
+					// Posição do menu = posição do header + altura do header + espaçamento
+					var menuTop = headerTopFromViewport + headerHeight + 12;
+					
+					// Garante que o menu não fique acima da viewport
+					if (menuTop < 0) {
+						menuTop = 12;
+					}
+					
+					$mobileNav.css({
+						'top': menuTop + 'px',
+						'position': 'fixed',
+						'left': '16px',
+						'right': '16px',
+						'width': 'calc(100% - 32px)'
+					});
+					
+					// Força o slideDown após definir a posição
+					$mobileNav.stop(true, true).slideDown(220);
+				});
+			} else {
+				$mobileNav.stop(true, true).slideDown(220);
+			}
+			
 			if ($mobileBackdrop.length) {
 				$mobileBackdrop.stop(true, true).fadeIn(180);
 			}
@@ -207,6 +242,52 @@
 				$mobileNav.removeAttr('style');
 			} else if (!$menuTrigger.hasClass('active')) {
 				$mobileNav.removeAttr('style');
+			} else if ($menuTrigger.hasClass('active')) {
+				// Recalcula posição ao redimensionar
+				requestAnimationFrame(function() {
+					var $header = $('.header-area');
+					var headerHeight = $header.outerHeight(true);
+					var headerRect = $header[0].getBoundingClientRect();
+					var headerTopFromViewport = headerRect.top;
+					var menuTop = headerTopFromViewport + headerHeight + 12;
+					
+					if (menuTop < 0) {
+						menuTop = 12;
+					}
+					
+					$mobileNav.css({
+						'top': menuTop + 'px',
+						'position': 'fixed',
+						'left': '16px',
+						'right': '16px',
+						'width': 'calc(100% - 32px)'
+					});
+				});
+			}
+		});
+		
+		// Recalcula posição do menu ao scrollar quando aberto
+		$(window).on('scroll', function() {
+			if ($menuTrigger.hasClass('active') && $(window).width() < 992) {
+				requestAnimationFrame(function() {
+					var $header = $('.header-area');
+					var headerHeight = $header.outerHeight(true);
+					var headerRect = $header[0].getBoundingClientRect();
+					var headerTopFromViewport = headerRect.top;
+					var menuTop = headerTopFromViewport + headerHeight + 12;
+					
+					if (menuTop < 0) {
+						menuTop = 12;
+					}
+					
+					$mobileNav.css({
+						'top': menuTop + 'px',
+						'position': 'fixed',
+						'left': '16px',
+						'right': '16px',
+						'width': 'calc(100% - 32px)'
+					});
+				});
 			}
 		});
 	}
